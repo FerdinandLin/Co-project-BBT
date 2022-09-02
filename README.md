@@ -47,4 +47,10 @@
 
 #### 步进电机驱动器
 
-步进电机驱动器为HBS57。
+步进电机驱动器为HBS57。驱动器控制信号由 **使能信号ENA**，**方向信号DIR**，**脉冲信号PUL** 组成。通过读取配置文件来获知输入是共阳接法或是共阴接法，从而决定引脚输出信号的方式。
+
+项目使用Raspberry Pi4B, 引脚**GPIO.1(BCM-18)** 与 **GPIO.4(BCM-23)** 分别用于 **DIR** 与 **PUL** 通讯。
+
+编码开关和细分数的关系如下所示,项目选择5000的细分数。
+
+![编码开关和细分数的关系](https://raw.githubusercontent.com/FerdinandLin/img/main/2022/project_bbt/sw%26microsteps.png)
