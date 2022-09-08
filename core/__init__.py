@@ -8,6 +8,3 @@
 if not __name__ == '__main__':
     print('初始化核心服务')
 
-import os
-os.system("sudo pigpiod")
-

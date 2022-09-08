@@ -103,7 +103,7 @@ def pulse(pultime):
 #   导程
 screwlead = float(config.get('leadscrew', 'lead'))
 #   细分值
-microsteps = float(config.get('leadscrew', 'microsteps'))
+microsteps = float(config.get('HBS57', 'microsteps'))
 #   每一微步步进位移距离
 microdistance = screwlead/microsteps
 
