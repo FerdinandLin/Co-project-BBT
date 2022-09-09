@@ -69,7 +69,7 @@ def init():
 
 def dirflip():
     """电机转动方向翻转"""
-    global dirlevel
+    global dirlevel, dirio
     if dirlevel:
         dirlevel = 0
     else:
