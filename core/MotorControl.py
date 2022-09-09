@@ -103,23 +103,29 @@ def pulse(pultime):
 #   导程
 screwlead = float(config.get('leadscrew', 'lead'))
 #   细分值
-microsteps = float(config.get('leadscrew', 'microsteps'))
+microsteps = float(config.get('HBS57', 'microsteps'))
 #   每一微步步进位移距离
 microdistance = screwlead/microsteps
 
 
-def zmove(distance):
+def zmove(distance, direct, speed=10):
     """对成像平台进行移动
-    :param distance: 平台1ms内要位移的距离
+
+    :param distance: 平台要位移的距离
+    :param direct: 平台位移方向
+    :param speed: 平台位移速度(默认10)
     :return:未能完成位移的微步数
     """
     global microdistance
+    global dirlevel
     steps = int(distance/microdistance)
     steprem = distance % microdistance
-    microsteptime = 1000/steps
+    microsteptime = microsteps/speed
+    if direct != dirlevel:
+        dirflip()
     for i in range(steps):
         pulse(microsteptime)
     return steprem
 
 
-#   print('MotorControl.py 电机控制模块初始化完成')
+print('MotorControl.py 电机控制模块初始化完成')
