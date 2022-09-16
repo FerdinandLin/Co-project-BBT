@@ -61,6 +61,7 @@ def init():
     pi.set_mode(enaio, pigpio.OUTPUT)
     pi.set_mode(dirio, pigpio.OUTPUT)
     pi.set_mode(pulio, pigpio.OUTPUT)
+    pi.write(pulio,ena)
     delay(t1)
     pi.write(dirio, ena)
     delay(t2)
