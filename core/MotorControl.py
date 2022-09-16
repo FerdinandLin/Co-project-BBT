@@ -38,6 +38,7 @@ else:
 #   读取通讯引脚信息
 dirio = int(config.get('HBS57', 'DIR'))
 pulio = int(config.get('HBS57', 'PUL'))
+enaio = int(config.get('HBS57', 'ENA'))
 
 #   读取时序
 #   ENA提前DIR时间(us)
@@ -57,6 +58,7 @@ dirlevel = ena
 
 def init():
     """电机启动初始化"""
+    pi.set_mode(enaio, pigpio.OUTPUT)
     pi.set_mode(dirio, pigpio.OUTPUT)
     pi.set_mode(pulio, pigpio.OUTPUT)
     delay(t1)
