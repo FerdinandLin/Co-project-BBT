@@ -6,6 +6,8 @@
 # @Desc        :
 
 from time import sleep as delay
+from warnings import warn
+from math import floor
 
 import sys
 import pigpio
@@ -26,14 +28,17 @@ if anode == 'True':
 elif anode == 'False':
     anode = False
 else:
-    sys.exit("警告：配置文件[HBS57] 'anode' 不符合要求")
+    warn("配置文件[HBS57] 'anode' 不符合要求")
+    sys.exit()
 #   使能信号共阴时高电平
 ena = 1
 if anode:
     ena = 0
-    print('驱动器为共阳接法')
-else:
+    disable = 1
     print('驱动器为共阴接法')
+else:
+    disable = 0
+    print('驱动器为共阳接法')
 
 #   读取通讯引脚信息
 dirio = int(config.get('HBS57', 'DIR'))
@@ -51,9 +56,11 @@ t3 = float(config.get('HBS57', 't3'))/10**6
 #   授予对Pi的GPIO的访问权
 pi = pigpio.pi()
 if not pi.connected:
-    sys.exit('警告：GPIO连接出错')
+    warn('GPIO连接出现错误')
+    sys.exit()
 
 dirlevel = ena
+steprem = 0
 
 
 def init():
@@ -61,12 +68,33 @@ def init():
     pi.set_mode(enaio, pigpio.OUTPUT)
     pi.set_mode(dirio, pigpio.OUTPUT)
     pi.set_mode(pulio, pigpio.OUTPUT)
-    pi.write(enaio,ena)
+    pi.write(enaio, ena)
     delay(t1)
     pi.write(dirio, ena)
     delay(t2)
     pi.write(pulio, ena)
     delay(t3)
+    print('电机启动初始化完成')
+    return 0
+
+
+def motorenable():
+    if pi.read(enaio) == ena:
+        warn('电机ENA控制信号已使能')
+    else:
+        pi.write(enaio, ena)
+        delay(t1)
+        print('电机ENA控制信号已执行使能')
+    return 0
+
+
+def motordisable():
+    if pi.read(enaio) == ena:
+        pi.write(enaio, disable)
+        delay(t1)
+        print('电机ENA控制信号已执行去使能')
+    else:
+        warn('电机ENA控制信号已去使能')
     return 0
 
 
@@ -119,15 +147,18 @@ def zmove(distance, direct, speed=10):
     :param speed: 平台位移速度(默认10)
     :return:未能完成位移的微步数
     """
-    global microdistance
-    global dirlevel
-    steps = int(distance/microdistance)
-    steprem = distance % microdistance
+    global steprem
+    steps = floor(distance/microdistance)
+    steprem = steprem + distance % microdistance
     microsteptime = microsteps/speed
     if direct != dirlevel:
         dirflip()
     for i in range(steps):
         pulse(microsteptime)
+    if steprem > microdistance:
+        pulse(1)
+        steprem = steprem - microdistance
+        print('进行微步补偿')
     return steprem
 
 
