@@ -105,5 +105,7 @@ def shoot(mode=shootmode):
 
 # def reboot():
 
+if not __name__ == '__main__':
+    camera_init()
 
 print('图像传感器模块初始化完成')
