@@ -21,6 +21,8 @@ else:
 config.read(confpath, encoding='utf-8')
 
 picam2 = Picamera2()
+# raw图像配置
+rawmode = int(config.get('CAMERA', 'rawmode'))
 
 
 def customconfig():
@@ -34,8 +36,6 @@ def customconfig():
     # image配置
     imghsize = int(config.get('CAMERA', 'imghsize'))
     imgvsize = int(config.get('CAMERA', 'imgvsize'))
-    # raw图像配置
-    rawmode = int(config.get('CAMERA', 'rawmode'))
 
     # 配置display lores流
     picam2.still_configuration.enable_lores()
@@ -43,7 +43,6 @@ def customconfig():
     # 配置image raw流
     picam2.still_configuration.enable_raw()
     picam2.still_configuration.size = (imghsize, imgvsize)
-    picam2.still_configuration.raw = picam2.sensor_modes[rawmode]
     # 设置配置文件
     return "still"
 
@@ -51,7 +50,7 @@ def customconfig():
 # 读取相机配置文件
 configname = config.get('CAMERA', 'config')
 if configname == 'still':
-    camera_config = picam2.create_still_configuration()
+    camera_config = picam2.create_still_configuration(raw = picam2.sensor_modes[rawmode])
 elif configname == 'preview':
     camera_config = picam2.create_preview_configuration()
 elif configname == 'video':
