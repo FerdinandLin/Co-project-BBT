@@ -54,3 +54,23 @@
 编码开关和细分数的关系如下所示,项目选择5000的细分数。
 
 ![编码开关和细分数的关系](https://raw.githubusercontent.com/FerdinandLin/img/main/2022/project_bbt/sw%26microsteps.png)
+
+
+## PCB
+### 目标
+将现有电器零件连接集成于PCB上。
+
+现有需连接部件
++ 树莓派
+  - 安装座(M2贴片螺母)
+  - IO口
+  - USB电源(稳压)
++ HBS57
+  - 24V电源供电
+  - 24V信号
++ 24V开关电源
+  - 电源输入
++ 显示屏
+  - USB电源
++ 激光光源
+  - USB电源
