@@ -5,4 +5,3 @@
 # @Author      :Lin
 # @Desc        :镜头畸变校正
 
-import lib.LDC.run_calib_IR as ldcir

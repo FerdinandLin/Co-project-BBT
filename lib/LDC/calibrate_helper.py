@@ -43,7 +43,6 @@ class Calibrator(object):
             self.img_paths += glob.glob(os.path.join(img_dir, "*.{}".format(extension)))
         assert len(self.img_paths), "No images for calibration found!"
 
-
     def calibrate_camera(self):
         w, h = self.shape_inner_corner
         # criteria: only for subpix calibration, which is not used here
@@ -86,7 +85,6 @@ class Calibrator(object):
         self.mat_intri = mat_intri
         self.coff_dis = coff_dis
         return mat_intri, coff_dis
-
 
     def dedistortion(self, save_dir):
         # if not calibrated, calibrate first
